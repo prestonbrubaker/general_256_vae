@@ -8,7 +8,7 @@ import os
 import numpy
 
 # Model Parameters
-latent_dim = 128
+latent_dim = 64
 LATENT_DIM = latent_dim
 
 class VariationalAutoencoder(nn.Module):
@@ -137,7 +137,7 @@ transform = transforms.Compose([
 
 
 # Instantiate the dataset
-dataset = CustomDataset(folder_path='data_lake', transform=transform)
+dataset = CustomDataset(folder_path='photos', transform=transform)
 
 # Dataset and Dataloader
 dataloader = DataLoader(dataset, batch_size=20, shuffle=True)
