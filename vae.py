@@ -8,7 +8,7 @@ import os
 import numpy
 
 # Model Parameters
-latent_dim = 16
+latent_dim = 32
 LATENT_DIM = latent_dim
 
 class VariationalAutoencoder(nn.Module):
@@ -163,7 +163,7 @@ else:
 
 
 # Loss and optimizer
-optimizer = optim.Adam(model.parameters(), lr=0.01)
+optimizer = optim.Adam(model.parameters(), lr=0.001)
 #optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
 
 
