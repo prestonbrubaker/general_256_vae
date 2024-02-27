@@ -196,9 +196,9 @@ for epoch in range(num_epochs):
         optimizer.step()
 
     # Average losses over the dataset
-    avg_mse_loss = total_mse_loss / len(dataloader.dataset)
-    avg_kld_loss = total_kld_loss / len(dataloader.dataset)
-    avg_total_loss = total_loss / len(dataloader.dataset)
+    avg_mse_loss = total_mse_loss / len(dataloader)
+    avg_kld_loss = total_kld_loss / len(dataloader)
+    avg_total_loss = total_loss / len(dataloader)
 
     avg_mse_test = test_model(model, test_dataloader, device)
 
