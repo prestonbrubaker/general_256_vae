@@ -82,7 +82,7 @@ class VariationalAutoencoder(nn.Module):
         return self.decode(z), mu, log_var
 
 def loss_function(recon_x, x, mu, log_var):
-    MSE = nn.functional.mse_loss(recon_x, x, reduction='sum')
+    MSE = nn.functional.mse_loss(recon_x, x, reduction='mean')
     KLD = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
     total_loss = MSE + KLD
     return MSE, KLD, total_loss
