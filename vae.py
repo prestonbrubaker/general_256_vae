@@ -89,6 +89,7 @@ def loss_function(recon_x, x, mu, log_var):
 
 
 
+
 # Custom Dataset
 class CustomDataset(Dataset):
     def __init__(self, folder_path, transform=None):
@@ -162,7 +163,7 @@ else:
 
 
 # Loss and optimizer
-optimizer = optim.Adam(model.parameters(), lr=0.01, eps=1e-8, weight_decay=0.00)
+optimizer = optim.Adam(model.parameters(), lr=0.0001)
 #optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
 
 
