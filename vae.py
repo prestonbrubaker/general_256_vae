@@ -144,7 +144,7 @@ dataloader = DataLoader(dataset, batch_size=20, shuffle=True)
 
 
 # Dataset and Dataloader for test data
-test_dataset = CustomDataset(folder_path='unsolved_photos', transform=transform)
+test_dataset = CustomDataset(folder_path='test_photos', transform=transform)
 test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=False) 
 
 
