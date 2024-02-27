@@ -82,10 +82,10 @@ class VariationalAutoencoder(nn.Module):
         return self.decode(z), mu, log_var
 
 def loss_function(recon_x, x, mu, log_var):
-    BCE = nn.functional.binary_cross_entropy(recon_x, x, reduction='sum')
+    MSE = nn.functional.mse_loss(recon_x, x, reduction='sum')
     KLD = -0.5 * torch.sum(1 + log_var - mu.pow(2) - log_var.exp())
-    total_loss = BCE + KLD
-    return BCE, KLD, total_loss
+    total_loss = MSE + KLD
+    return MSE, KLD, total_loss
 
 
 
@@ -162,14 +162,14 @@ else:
 
 
 # Loss and optimizer
-optimizer = optim.Adadelta(model.parameters(), lr=0.01, eps=1e-8, weight_decay=0.00)
+optimizer = optim.Adam(model.parameters(), lr=0.01, eps=1e-8, weight_decay=0.00)
 #optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
 
 
 # Train the model
 num_epochs = 100000
 for epoch in range(num_epochs):
-    total_bce_loss = 0
+    total_mse_loss = 0
     total_kld_loss = 0
     total_loss = 0
 
@@ -180,11 +180,11 @@ for epoch in range(num_epochs):
         recon_batch, mu, log_var = model(img)
         
         # Calculate loss
-        BCE_loss, KLD_loss, loss = loss_function(recon_batch, img, mu, log_var)
+        MSE_loss, KLD_loss, loss = loss_function(recon_batch, img, mu, log_var)
 
 
         # Accumulate losses for averaging
-        total_bce_loss += BCE_loss.item()
+        total_mse_loss += MSE_loss.item()
         total_kld_loss += KLD_loss.item()
         total_loss += loss.item()
 
@@ -195,16 +195,16 @@ for epoch in range(num_epochs):
         optimizer.step()
 
     # Average losses over the dataset
-    avg_bce_loss = total_bce_loss / len(dataloader.dataset)
+    avg_mse_loss = total_mse_loss / len(dataloader.dataset)
     avg_kld_loss = total_kld_loss / len(dataloader.dataset)
     avg_total_loss = total_loss / len(dataloader.dataset)
 
     avg_mse_test = test_model(model, test_dataloader, device)
 
 
-    print(f'Epoch {epoch+1}, Avg Total Loss: {avg_total_loss:.6f}, Avg BCE Loss: {avg_bce_loss:.6f}, Avg KLD Loss: {avg_kld_loss:.6f}, Test MSE Loss: {avg_mse_test:.6f}')
+    print(f'Epoch {epoch+1}, Avg Total Loss: {avg_total_loss:.6f}, Avg MSE Loss: {avg_mse_loss:.6f}, Avg KLD Loss: {avg_kld_loss:.6f}, Test MSE Loss: {avg_mse_test:.6f}')
     with open('model_history.txt', 'a') as file:
-        file.write(f'Epoch: {epoch}, Avg_Total_Loss: {avg_total_loss:.6f}, Avg_BCE_Loss: {avg_bce_loss:.6f}, Avg_KLD_Loss: {avg_kld_loss:.6f}, Test_MSE_Loss: {avg_mse_test:.6f} \n')
+        file.write(f'Epoch: {epoch}, Avg_Total_Loss: {avg_total_loss:.6f}, Avg_MSE_Loss: {avg_mse_loss:.6f}, Avg_KLD_Loss: {avg_kld_loss:.6f}, Test_MSE_Loss: {avg_mse_test:.6f} \n')
     
     if (epoch % 25 == 0 and epoch > 24):
         torch.save(model.state_dict(), f'variational_autoencoder.pth')
