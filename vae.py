@@ -8,7 +8,7 @@ import os
 import numpy
 
 # Model Parameters
-latent_dim = 512
+latent_dim = 16
 LATENT_DIM = latent_dim
 
 class VariationalAutoencoder(nn.Module):
