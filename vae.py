@@ -163,7 +163,7 @@ else:
 
 
 # Loss and optimizer
-optimizer = optim.Adam(model.parameters(), lr=0.0001)
+optimizer = optim.Adam(model.parameters(), lr=0.01)
 #optimizer = optim.SGD(model.parameters(), lr=0.00001, momentum=0.9)
 
 
